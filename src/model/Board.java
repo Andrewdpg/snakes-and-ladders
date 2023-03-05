@@ -30,7 +30,7 @@ public class Board {
             box.setNext(box);
             start = box;
             end = box;
-        }else{
+        } else {
             end.setNext(new Box(index, end));
             end.getNext().setNext(start);
             end = end.getNext();
@@ -39,5 +39,25 @@ public class Board {
     }
 
     public void initSnakesAndLadders(int snakes, int ladders) {
+        // Si el usuario pide más serpientes y escaleras que número de casillas
+        if (snakes + ladders > length - 2) {
+            System.out.println("Número de escaleras y serpientes demasiado grande, tomando el número máximo posible");
+            snakes = maxSnakes(snakes, ladders); // Toma el máximo de serpientes en base a las casillas
+            ladders = maxLadders(snakes, ladders); // Toma el máximo de escaleras en base a las casillas
+        }
+    }
+
+    private int maxSnakes(int snakes, int ladders) {
+        if (snakes + ladders > length - 2) {
+            maxSnakes(snakes - 1, ladders - 1);
+        }
+        return snakes;
+    }
+
+    private int maxLadders(int snakes, int ladders) {
+        if (snakes + ladders > length - 2) {
+            maxSnakes(snakes - 1, ladders - 1);
+        }
+        return ladders;
     }
 }

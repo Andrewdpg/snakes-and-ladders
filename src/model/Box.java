@@ -41,4 +41,11 @@ public class Box {
         this.previous = previous;
     }
 
+    public boolean hasSnake(){
+        return snake != null;
+    }
+
+    public boolean hasLadder(){
+        return ladder != null;
+    }
 }
