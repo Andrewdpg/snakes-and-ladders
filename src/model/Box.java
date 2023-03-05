@@ -48,4 +48,20 @@ public class Box {
     public boolean hasLadder(){
         return ladder != null;
     }
+
+    public Box getSnake() {
+        return snake;
+    }
+
+    public Box getLadder() {
+        return ladder;
+    }
+
+    public void setSnake(Box snake) {
+        this.snake = snake;
+    }
+
+    public void setLadder(Box ladder) {
+        this.ladder = ladder;
+    }
 }

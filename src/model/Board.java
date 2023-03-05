@@ -1,5 +1,7 @@
 package model;
 
+import ui.Reader;
+
 public class Board {
 
     private int rows;
@@ -45,6 +47,43 @@ public class Board {
             snakes = maxSnakes(snakes, ladders); // Toma el máximo de serpientes en base a las casillas
             ladders = maxLadders(snakes, ladders); // Toma el máximo de escaleras en base a las casillas
         }
+
+        initSnakes(snakes, getBoxStartingFrom(-Reader.randInt(1, length), end)); // Inicializa primero las serpientes
+        initLadders(ladders, getBoxStartingFrom(Reader.randInt(1, length), start)); // Inicializa, luego, las escaleras
+    }
+
+    private void initSnakes(int snakes, Box current) {
+        if (snakes == 0) {// Si no tiene nada más por generar, termina
+            return;
+        }
+        if (current != end && current != start) {// No puede haber escalera o serpiente en inicio o fin
+            if (!current.hasSnake() &&
+                    !current.hasLadder()) {// No puede contener ya una escalera o una serpiente
+                // Asigna una casilla, al azar, que esté detrás.
+                current.setSnake(getBoxStartingFrom(-Reader.randInt(1, current.getId()), current));
+                // Se llama a sí mismo nuevamente para completar el proceso de creación.
+                initSnakes(snakes - 1, getBoxStartingFrom(-Reader.randInt(1, length), current));
+                return;
+            }
+        }
+        initLadders(snakes, getBoxStartingFrom(-Reader.randInt(1, length), current));
+    }
+
+    private void initLadders(int ladders, Box current) {
+        if (ladders == 0) { // Si no tiene nada más por generar, termina
+            return;
+        }
+        if (current != end && current != start) { // No puede haber escalera o serpiente en inicio o fin
+            if (!current.hasSnake() &&
+                    !current.hasLadder()) { // No puede contener ya una escalera o una serpiente
+                // Asigna una casilla, al azar, que esté delante.
+                current.setLadder(getBoxStartingFrom(Reader.randInt(1, length - current.getId()), current));
+                // Se llama a sí mismo nuevamente para completar el proceso de creación.
+                initLadders(ladders - 1, getBoxStartingFrom(Reader.randInt(1, length), current));
+                return;
+            }
+        }
+        initLadders(ladders, getBoxStartingFrom(Reader.randInt(1, length), current));
     }
 
     public Box getBox(int num) {
