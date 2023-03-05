@@ -11,7 +11,7 @@ public class Menu {
             + "1. Tirar dado\n"
             + "2. Ver escaleras y serpientes\n"
             + "Opcion: ";
-            
+
     private int option;
     private Game game;
     private boolean isRunning;
@@ -24,7 +24,20 @@ public class Menu {
     // Puse esto solo para que temporalmente no de error
     private void initGame() {
         game = new Game();
-        game.init(2, 2, 3, 0);
+        int rows;
+        int columns;
+        int snakes;
+        int ladders;
+
+        System.out.print("¿Cuantas filas tendrá el tablero?");
+        rows = Reader.readInt(2, 2);
+        System.out.print("¿Cuantas columnas tendrá el tablero?");
+        columns = Reader.readInt(2, 2);
+        System.out.print("¿Cuantas serpientes tendrá el tablero?");
+        snakes = Reader.readInt(0);
+        System.out.print("¿Cuantas escaleras tendrá el tablero?");
+        ladders = Reader.readInt(0);
+        game.init(rows, columns, snakes, ladders);
     }
 
     // Método para tirar el dado

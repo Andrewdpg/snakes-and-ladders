@@ -6,7 +6,7 @@ public class Game {
     private Board board;
 
     public Game() {
-
+        playerList = new PlayerList();
     }
 
     public void init(int rows, int columns, int snakes, int ladders) {

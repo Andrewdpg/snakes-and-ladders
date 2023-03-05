@@ -5,6 +5,8 @@ public class Box {
     private int id;
     private Box next;
     private Box previous;
+    private Box snake;
+    private Box ladder;
 
     public Box(int id) {
         this.id = id;

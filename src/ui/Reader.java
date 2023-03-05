@@ -11,6 +11,21 @@ public class Reader {
             return reader.nextInt();
         }
         reader.next();
+        System.out.println("Entrada inválida. Valor tomado: " + def);
+        return def;
+    }
+
+    public static int readInt(int def, int min){
+        if(reader.hasNextInt()){
+            int value = reader.nextInt();
+            if(value >= min){
+                return value;
+            }
+            System.out.println("Valor por debajo del mínimo. Valor tomado: " + min);
+            return min;
+        }
+        reader.next();
+        System.out.println("Entrada inválida. Valor tomado: " + def);
         return def;
     }
 

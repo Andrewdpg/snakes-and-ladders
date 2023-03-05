@@ -35,7 +35,6 @@ public class Board {
             end.getNext().setNext(start);
             end = end.getNext();
             start.setPrevious(end);
-            return;
         }
     }
 
