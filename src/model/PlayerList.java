@@ -7,11 +7,18 @@ public class PlayerList {
     public PlayerList() {
     }
 
-    // Método de añadir jugadores
-    // Puse esto solo para que temporalmente no de error
-    // Este método, claramente, debe cambiar
     public void addPlayer(char symbol) {
-        current = new Player(symbol);
+        Player player = new Player(symbol);
+        if (current == null) {
+            current = player;
+            current.setNext(current);
+            current.setPrevious(current);
+        }else{
+            current.getPrevious().setNext(player);
+            player.setPrevious(current.getPrevious());
+            player.setNext(current);
+            current.setPrevious(player);
+        }
     }
 
     public Player getCurrent() {

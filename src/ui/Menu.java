@@ -4,9 +4,6 @@ import model.Game;
 
 public class Menu {
 
-    private int option;
-    private Game game;
-    private boolean isRunning;
     private final String MAIN_MENU = "1. Jugar\n"
             + "2. Salir\n"
             + "Opcion:";
@@ -14,6 +11,10 @@ public class Menu {
             + "1. Tirar dado\n"
             + "2. Ver escaleras y serpientes\n"
             + "Opcion: ";
+            
+    private int option;
+    private Game game;
+    private boolean isRunning;
 
     public Menu() {
         isRunning = true;
@@ -23,7 +24,7 @@ public class Menu {
     // Puse esto solo para que temporalmente no de error
     private void initGame() {
         game = new Game();
-        game.init(0, 0, 0, 0);
+        game.init(2, 2, 3, 0);
     }
 
     // Método para tirar el dado

@@ -28,4 +28,20 @@ public class Player {
         this.position = position;
     }
 
+    public Player getNext() {
+        return next;
+    }
+
+    public void setNext(Player next) {
+        this.next = next;
+    }
+
+    public Player getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(Player previous) {
+        this.previous = previous;
+    }
+
 }

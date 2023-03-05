@@ -3,23 +3,23 @@ package model;
 public class Game {
 
     private PlayerList playerList;
-    private int rows;
-    private int columns;
+    private Board board;
 
     public Game() {
 
     }
 
     public void init(int rows, int columns, int snakes, int ladders) {
-        this.rows = rows;
-        this.columns = columns;
+        board = new Board(rows,columns);
         // Inicio la lista y añado un jugador, solo para que temporalmente no de error.
         // Estos métodos deben cambiar.
-        playerList = new PlayerList();
-        playerList.addPlayer('$');
+        board.initSnakesAndLadders(snakes,ladders);
     }
 
-    // Método que retornará al jugador que tenga turno
+    public void addPlayer(char symbol){
+        playerList.addPlayer(symbol);
+    }
+
     public Player getCurrentPlayer() {
         return playerList.getCurrent();
     }
