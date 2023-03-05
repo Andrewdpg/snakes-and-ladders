@@ -47,6 +47,21 @@ public class Board {
         }
     }
 
+    public Box getBox(int num) {
+        return getBoxStartingFrom(num, start);
+    }
+
+    private Box getBoxStartingFrom(int num, Box current) {
+        if (num == 0) { // Si num ya es 0, es porque llegó a la casilla buscada, por lo que retorna
+            return current;
+        }
+        if (num > 0) { // Si num es positivo, retorna la casilla que está n posiciones delante
+            return getBoxStartingFrom(num - 1, current.getNext());
+        } else { // Si num es negativo, retorna la casilla que está n posiciones detrás
+            return getBoxStartingFrom(num + 1, current.getPrevious());
+        }
+    }
+
     private int maxSnakes(int snakes, int ladders) {
         if (snakes + ladders > length - 2) {
             maxSnakes(snakes - 1, ladders - 1);
