@@ -72,8 +72,8 @@ public class Menu {
     }
 
     // Método para tirar el dado
-    private void throwDice() {
-
+    public void throwDice() {
+        System.out.println(game.throwDice()); 
     }
 
     // Método para mostar las escaleras y serpientes.
