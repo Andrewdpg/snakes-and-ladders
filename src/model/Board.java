@@ -44,9 +44,13 @@ public class Board {
         // Si el usuario pide más serpientes y escaleras que número de casillas
         if (snakes + ladders > length - 2) {
             System.out.println("Número de escaleras y serpientes demasiado grande, tomando el número máximo posible");
-            snakes = maxSnakes(snakes, ladders); // Toma el máximo de serpientes en base a las casillas
-            ladders = maxLadders(snakes, ladders); // Toma el máximo de escaleras en base a las casillas
+            // Toma el máximo de serpientes y escaleras en base a las casillas
+            ladders = ladders - ((snakes + ladders)-(length-2))/2;
+            snakes = snakes - ((snakes + ladders)-(length-2));
+
         }
+        System.out.println("Escaleras generadas: " + ladders);
+        System.out.println("Serpientes generadas: " + snakes);
 
         initSnakes(snakes, getBoxStartingFrom(-Reader.randInt(1, length), end)); // Inicializa primero las serpientes
         initLadders(ladders, getBoxStartingFrom(Reader.randInt(1, length), start)); // Inicializa, luego, las escaleras
@@ -66,7 +70,7 @@ public class Board {
                 return;
             }
         }
-        initLadders(snakes, getBoxStartingFrom(-Reader.randInt(1, length), current));
+        initSnakes(snakes, getBoxStartingFrom(-Reader.randInt(1, length), current));
     }
 
     private void initLadders(int ladders, Box current) {
@@ -99,19 +103,5 @@ public class Board {
         } else { // Si num es negativo, retorna la casilla que está n posiciones detrás
             return getBoxStartingFrom(num + 1, current.getPrevious());
         }
-    }
-
-    private int maxSnakes(int snakes, int ladders) {
-        if (snakes + ladders > length - 2) {
-            maxSnakes(snakes - 1, ladders - 1);
-        }
-        return snakes;
-    }
-
-    private int maxLadders(int snakes, int ladders) {
-        if (snakes + ladders > length - 2) {
-            maxSnakes(snakes - 1, ladders - 1);
-        }
-        return ladders;
     }
 }
