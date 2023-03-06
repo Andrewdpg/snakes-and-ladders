@@ -33,14 +33,24 @@ public class Reader {
         return reader.next();
     }
 
+    //Lee un caracter
+    public static char readChar(char def){
+        String value= reader.next();
+        //En caso de no introducir nada, retorna un valor por defecto
+        if(!value.isEmpty()){
+            return value.charAt(0);
+        }
+        return def;
+    }
+
     public static int randInt(int start, int end) {
-        if(end > start){
+        if (end > start) {
             return (int) ((Math.random() * (1 + end - start)) + start);
         }
         return start;
     }
 
     public static int randInt(int end) {
-        return (int) (Math.random() * (end+1));
+        return (int) (Math.random() * (end + 1));
     }
 }
