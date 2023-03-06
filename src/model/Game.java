@@ -1,4 +1,5 @@
 package model;
+import java.util.*;
 
 public class Game {
 
@@ -7,6 +8,7 @@ public class Game {
     private PlayerList playerList;
     private Board board;
     private String availableSymbols;
+    private int dice;
 
     public Game() {
         playerList = new PlayerList();
@@ -36,5 +38,19 @@ public class Game {
 
     public String getAvailableSymbols() {
         return availableSymbols;
+    }
+
+    public int throwDice(){
+        Random random = new Random();
+        dice= random.nextInt(6) + 1;
+        return dice;
+    }
+
+    private void movePlayer(Player current){
+        current.setPosition(current.getPosition()+ dice);
+    }
+    
+    public void movePlayer(){
+        movePlayer(getCurrentPlayer());
     }
 }
