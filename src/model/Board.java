@@ -104,4 +104,44 @@ public class Board {
             return getBoxStartingFrom(num + 1, current.getPrevious());
         }
     }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
+    public void setColumns(int columns) {
+        this.columns = columns;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public Box getStart() {
+        return start;
+    }
+
+    public void setStart(Box start) {
+        this.start = start;
+    }
+
+    public Box getEnd() {
+        return end;
+    }
+
+    public void setEnd(Box end) {
+        this.end = end;
+    }
 }

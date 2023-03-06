@@ -47,6 +47,9 @@ public class Game {
     }
 
     private void movePlayer(Player current){
+        if(current.getPosition()+dice>board.getLength()){
+            return;
+        }
         current.setPosition(current.getPosition()+ dice);
     }
     
