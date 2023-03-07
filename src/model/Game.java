@@ -70,5 +70,8 @@ public class Game {
     
     public void movePlayer(){
         movePlayer(getCurrentPlayer());
+        if(getCurrentPlayer().getPosition()==board.getEnd().getId()){
+            System.out.println("Jugador "+getCurrentPlayer().getSymbol()+ " haz ganado el juego.");
+        }
     }
 }
