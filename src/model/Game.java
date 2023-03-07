@@ -35,6 +35,9 @@ public class Game {
     public Player getCurrentPlayer() {
         return playerList.getCurrent();
     }
+    public Player nextPlayer() {
+        return playerList.getNextPlayer();
+    }
 
     public String getAvailableSymbols() {
         return availableSymbols;
@@ -63,11 +66,9 @@ public class Game {
                 System.out.println("Era casilla escalera");
             }
             System.out.println("Nueva posición: "+current.getPosition());
-            return;
         }else{
             current.setPosition(current.getPosition()+ dice);
             System.out.println("Nueva posición: "+current.getPosition());
-            return;
         }
         //
     }

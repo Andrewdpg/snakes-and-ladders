@@ -25,6 +25,11 @@ public class PlayerList {
         return current;
     }
 
+    public Player getNextPlayer(){
+        current = current.getNext();
+        return current;
+    }
+
     public String getPlayersAt(int boxID) {
         return getPlayersAt(boxID, this.current);
     }

@@ -76,6 +76,8 @@ public class Menu {
     public void throwDice() {
         System.out.println(game.throwDice());
         game.movePlayer();
+        game.showPlayersBoard();
+        game.nextPlayer();
     }
 
     // Método para mostar las escaleras y serpientes.
