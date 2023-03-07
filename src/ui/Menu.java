@@ -73,7 +73,8 @@ public class Menu {
 
     // Método para tirar el dado
     public void throwDice() {
-        System.out.println(game.throwDice()); 
+        System.out.println(game.throwDice());
+        game.movePlayer();
     }
 
     // Método para mostar las escaleras y serpientes.

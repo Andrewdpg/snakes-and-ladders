@@ -47,10 +47,25 @@ public class Game {
     }
 
     private void movePlayer(Player current){
+        System.out.println("Posición anterior: "+current.getPosition());
         if(current.getPosition()+dice>board.getLength()){
             return;
         }
-        current.setPosition(current.getPosition()+ dice);
+        if(board.getBox(current.getPosition()+dice).hasSnake()||board.getBox(current.getPosition()+dice).hasLadder()){
+            current.setPosition(board.getBox(current.getPosition()+dice).getId());
+            if(board.getBox(current.getPosition()+dice).hasSnake()){
+                System.out.println("Era casilla serpiente");
+            }else{
+                System.out.println("Era casilla escalera");
+            }
+            System.out.println("Nueva posición: "+current.getPosition());
+            return;
+        }else{
+            current.setPosition(current.getPosition()+ dice);
+            System.out.println("Nueva posición: "+current.getPosition());
+            return;
+        }
+        //
     }
     
     public void movePlayer(){
