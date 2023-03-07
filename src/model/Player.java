@@ -10,6 +10,7 @@ public class Player {
 
     public Player(char symbol) {
         this.symbol = symbol;
+        this.position = 1;
     }
 
     public String getSymbol() {

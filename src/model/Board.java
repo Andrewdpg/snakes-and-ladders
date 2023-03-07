@@ -45,12 +45,11 @@ public class Board {
         if (snakes + ladders > length - 2) {
             System.out.println("Número de escaleras y serpientes demasiado grande, tomando el número máximo posible");
             // Toma el máximo de serpientes y escaleras en base a las casillas
-            ladders = ladders - ((snakes + ladders)-(length-2))/2;
-            snakes = snakes - ((snakes + ladders)-(length-2));
-
+            ladders = ladders - ((snakes + ladders) - (length - 2)) / 2;
+            snakes = snakes - ((snakes + ladders) - (length - 2));
+            System.out.println("Escaleras generadas: " + ladders);
+            System.out.println("Serpientes generadas: " + snakes);
         }
-        System.out.println("Escaleras generadas: " + ladders);
-        System.out.println("Serpientes generadas: " + snakes);
 
         initSnakes(snakes, getBoxStartingFrom(-Reader.randInt(1, length), end)); // Inicializa primero las serpientes
         initLadders(ladders, getBoxStartingFrom(Reader.randInt(1, length), start)); // Inicializa, luego, las escaleras
@@ -102,6 +101,31 @@ public class Board {
             return getBoxStartingFrom(num - 1, current.getNext());
         } else { // Si num es negativo, retorna la casilla que está n posiciones detrás
             return getBoxStartingFrom(num + 1, current.getPrevious());
+        }
+    }
+
+    public String getPlayersBoard(PlayerList players) {
+        return getPlayersBoard(players, start, 1);
+    }
+
+    private String getPlayersBoard(PlayerList players, Box current, int row) {
+        if (row > rows) {
+            return "";
+        }
+        return getPlayersBoard(players, getBoxStartingFrom(columns, current), row + 1) + "\n"
+                + getRowToString(row, current, players);
+    }
+
+    private String getRowToString(int row, Box current, PlayerList players) {
+        if (current.getId() % columns == 0) {
+            return "[" + current.getId() + (players.getPlayersAt(current.getId())) + "]";
+        }
+        if (row % 2 == 0) {
+            return getRowToString(row, current.getNext(), players) + "[" + current.getId()
+                    + (players.getPlayersAt(current.getId())) + "]";
+        } else {
+            return "[" + current.getId() + (players.getPlayersAt(current.getId())) + "]"
+                    + getRowToString(row, current.getNext(), players);
         }
     }
 

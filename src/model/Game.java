@@ -40,6 +40,10 @@ public class Game {
         return availableSymbols;
     }
 
+    public void showPlayersBoard() {
+        System.out.println(board.getPlayersBoard(playerList));
+    }
+
     public int throwDice(){
         Random random = new Random();
         dice= random.nextInt(6) + 1;

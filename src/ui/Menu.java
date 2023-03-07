@@ -56,6 +56,7 @@ public class Menu {
 
         addPlayers(nPlayers, 1);
         System.out.println("Juego correctamente inicializado.\n\n");
+        game.showPlayersBoard();
     }
 
     //Método recursivo que agrega n jugadores
