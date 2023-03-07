@@ -1,4 +1,5 @@
 package model;
+
 import java.util.*;
 
 public class Game {
@@ -9,9 +10,11 @@ public class Game {
     private Board board;
     private String availableSymbols;
     private int dice;
+    private boolean hasFinished;
 
     public Game() {
         playerList = new PlayerList();
+        hasFinished = false;
         availableSymbols = "*!OX%$#+&";
     }
 
@@ -35,6 +38,7 @@ public class Game {
     public Player getCurrentPlayer() {
         return playerList.getCurrent();
     }
+
     public Player nextPlayer() {
         return playerList.getNextPlayer();
     }
@@ -47,36 +51,42 @@ public class Game {
         System.out.println(board.getPlayersBoard(playerList));
     }
 
-    public int throwDice(){
+    public int throwDice() {
         Random random = new Random();
-        dice= random.nextInt(6) + 1;
+        dice = random.nextInt(6) + 1;
         return dice;
     }
 
-    private void movePlayer(Player current){
-        System.out.println("Posición anterior: "+current.getPosition());
-        if(current.getPosition()+dice>board.getLength()){
+    private void movePlayer(Player current) {
+        System.out.println("Posición anterior: " + current.getPosition());
+        if (current.getPosition() + dice > board.getLength()) {
             return;
         }
-        if(board.getBox(current.getPosition()+dice).hasSnake()||board.getBox(current.getPosition()+dice).hasLadder()){
-            current.setPosition(board.getBox(current.getPosition()+dice).getId());
-            if(board.getBox(current.getPosition()+dice).hasSnake()){
+        if (board.getBox(current.getPosition() + dice).hasSnake()
+                || board.getBox(current.getPosition() + dice).hasLadder()) {
+            current.setPosition(board.getBox(current.getPosition() + dice).getId());
+            if (board.getBox(current.getPosition() + dice).hasSnake()) {
                 System.out.println("Era casilla serpiente");
-            }else{
+            } else {
                 System.out.println("Era casilla escalera");
             }
-            System.out.println("Nueva posición: "+current.getPosition());
-        }else{
-            current.setPosition(current.getPosition()+ dice);
-            System.out.println("Nueva posición: "+current.getPosition());
+            System.out.println("Nueva posición: " + current.getPosition());
+        } else {
+            current.setPosition(current.getPosition() + dice);
+            System.out.println("Nueva posición: " + current.getPosition());
         }
         //
     }
-    
-    public void movePlayer(){
+
+    public void movePlayer() {
         movePlayer(getCurrentPlayer());
-        if(getCurrentPlayer().getPosition()==board.getEnd().getId()){
-            System.out.println("Jugador "+getCurrentPlayer().getSymbol()+ " haz ganado el juego.");
+        if (getCurrentPlayer().getPosition() == board.getEnd().getId()) {
+            System.out.println("Jugador " + getCurrentPlayer().getSymbol() + " haz ganado el juego.");
+            hasFinished = true;
         }
+    }
+
+    public boolean hasFinished() {
+        return hasFinished;
     }
 }

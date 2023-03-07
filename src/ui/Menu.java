@@ -11,6 +11,10 @@ public class Menu {
             + "1. Tirar dado\n"
             + "2. Ver escaleras y serpientes\n"
             + "Opcion: ";
+    private final String PLAY_AGAIN_MENU = "Juego terminado, ¿quieres jugar de nuevo?\n"
+            + "1. Si\n"
+            + "2. No\n"
+            + "Opcion: ";
 
     private int option;
     private Game game;
@@ -42,12 +46,12 @@ public class Menu {
         initPlayers();
     }
 
-    private void initPlayers(){
+    private void initPlayers() {
         int nPlayers;
         System.out.print("¿Cuantas jugadores habrá? (Maximo " + Game.MAX_PLAYERS + ") ");
         nPlayers = Reader.readInt(Game.MAX_PLAYERS, 2);
 
-        //Si el número de jugadores excede el máximo, toma el valor máximo
+        // Si el número de jugadores excede el máximo, toma el valor máximo
         if (nPlayers > Game.MAX_PLAYERS) {
             System.out
                     .println("Valor por encima de " + Game.MAX_PLAYERS + ". Numero de jugadores: " + Game.MAX_PLAYERS);
@@ -59,7 +63,7 @@ public class Menu {
         game.showPlayersBoard();
     }
 
-    //Método recursivo que agrega n jugadores
+    // Método recursivo que agrega n jugadores
     private void addPlayers(int nPlayers, int index) {
         if (nPlayers == 0) {
             return;
@@ -78,16 +82,27 @@ public class Menu {
         game.movePlayer();
         game.showPlayersBoard();
         game.nextPlayer();
+        if (game.hasFinished()) {
+            saveScore();
+        }
     }
 
-    // Método para mostar las escaleras y serpientes.
-    private void printSnakesAndLadders() {
+    // Guardar los puntajes cuando termina el juego
+    private void saveScore() {
 
+    }
+
+    private void printSnakesAndLadders(){
+        
     }
 
     public void printMenu() {
         if (isInitialized()) {
-            System.out.print(GAME_MENU.replace("{player}", game.getCurrentPlayer().getSymbol()));
+            if (!game.hasFinished()) {
+                System.out.print(GAME_MENU.replace("{player}", game.getCurrentPlayer().getSymbol()));
+            } else {
+                System.out.print(PLAY_AGAIN_MENU);
+            }
         } else {
             System.out.print(MAIN_MENU);
         }
@@ -95,7 +110,11 @@ public class Menu {
 
     public void executeInput() {
         if (isInitialized()) {
-            executeGameMenu();
+            if (!game.hasFinished()) {
+                executeGameMenu();
+            } else {
+                executePlayAgainMenu();
+            }
         } else {
             executeMainMenu();
         }
@@ -123,6 +142,20 @@ public class Menu {
                 break;
             case 2:
                 printSnakesAndLadders();
+                break;
+            default:
+                System.out.println("Opcion no reconocida");
+                break;
+        }
+    }
+
+    private void executePlayAgainMenu() {
+        switch (option) {
+            case 1:
+                initGame();
+                break;
+            case 2:
+                isRunning = false;
                 break;
             default:
                 System.out.println("Opcion no reconocida");
