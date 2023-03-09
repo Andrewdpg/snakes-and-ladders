@@ -25,7 +25,6 @@ public class Menu {
     }
 
     // Método de inicialización del juego
-    // Puse esto solo para que temporalmente no de error
     private void initGame() {
         game = new Game();
         int rows;
@@ -93,7 +92,7 @@ public class Menu {
     }
 
     private void printSnakesAndLadders(){
-        
+        game.showSnakesAndLadders();
     }
 
     public void printMenu() {

@@ -4,6 +4,8 @@ import ui.Reader;
 
 public class Board {
 
+    private final String LETTERS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     private int rows;
     private int columns;
     private int length;
@@ -11,11 +13,18 @@ public class Board {
     private Box start;
     private Box end;
 
+    private int iConnection;
+    private int jConnection;
+    private int ladderIndex;
+
     public Board(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.length = rows * columns;
         initBoard(1);
+        iConnection = 0;
+        jConnection = 0;
+        ladderIndex = 1;
     }
 
     private void initBoard(int index) {
@@ -64,6 +73,9 @@ public class Board {
                     !current.hasLadder()) {// No puede contener ya una escalera o una serpiente
                 // Asigna una casilla, al azar, que esté detrás.
                 current.setSnake(getBoxStartingFrom(-Reader.randInt(1, current.getId()), current));
+                String connection = getAvailableSnakeConnection().trim();
+                current.addStartConnection(connection);
+                current.getSnake().addConnection(connection);
                 // Se llama a sí mismo nuevamente para completar el proceso de creación.
                 initSnakes(snakes - 1, getBoxStartingFrom(-Reader.randInt(1, length), current));
                 return;
@@ -81,6 +93,9 @@ public class Board {
                     !current.hasLadder()) { // No puede contener ya una escalera o una serpiente
                 // Asigna una casilla, al azar, que esté delante.
                 current.setLadder(getBoxStartingFrom(Reader.randInt(1, length - current.getId()), current));
+                current.addStartConnection(String.valueOf(ladderIndex));
+                current.getLadder().addConnection(String.valueOf(ladderIndex));
+                ladderIndex++;
                 // Se llama a sí mismo nuevamente para completar el proceso de creación.
                 initLadders(ladders - 1, getBoxStartingFrom(Reader.randInt(1, length), current));
                 return;
@@ -113,19 +128,43 @@ public class Board {
             return "";
         }
         return getPlayersBoard(players, getBoxStartingFrom(columns, current), row + 1) + "\n"
-                + getRowToString(row, current, players);
+                + getRowWithPlayersToString(row, current, players);
     }
 
-    private String getRowToString(int row, Box current, PlayerList players) {
+    private String getRowWithPlayersToString(int row, Box current, PlayerList players) {
         if (current.getId() % columns == 0) {
             return "[" + current.getId() + (players.getPlayersAt(current.getId())) + "]";
         }
         if (row % 2 == 0) {
-            return getRowToString(row, current.getNext(), players) + "[" + current.getId()
+            return getRowWithPlayersToString(row, current.getNext(), players)  + "[" + current.getId()
                     + (players.getPlayersAt(current.getId())) + "]";
         } else {
-            return "[" + current.getId() + (players.getPlayersAt(current.getId())) + "]"
-                    + getRowToString(row, current.getNext(), players);
+            return "[" + current.getId() + (players.getPlayersAt(current.getId())) + "]" 
+                    + getRowWithPlayersToString(row, current.getNext(), players);
+        }
+    }
+
+    public String getSnakesAndLaddersBoard() {
+        return getSnakesAndLaddersBoard(start, 1);
+    }
+
+    private String getSnakesAndLaddersBoard(Box current, int row) {
+        if (row > rows) {
+            return "";
+        }
+        return getSnakesAndLaddersBoard(getBoxStartingFrom(columns, current), row + 1) + "\n"
+                + getRowToString(row, current);
+    }
+
+    private String getRowToString(int row, Box current) {
+        if (current.getId() % columns == 0) {
+            return "[" + current.getConnections() + "]";
+        }
+        if (row % 2 == 0) {
+            return getRowToString(row, current.getNext()) + "[" + current.getConnections() + "]";
+        } else {
+            return "[" + current.getConnections() + "]"
+                    + getRowToString(row, current.getNext());
         }
     }
 
@@ -167,5 +206,17 @@ public class Board {
 
     public void setEnd(Box end) {
         this.end = end;
+    }
+
+    public String getAvailableSnakeConnection() {
+        iConnection++;
+        if (iConnection >= LETTERS.length()) {
+            iConnection = 1;
+            jConnection++;
+        }
+        if (jConnection >= LETTERS.length()) {
+            return jConnection + "" + LETTERS.charAt(iConnection);
+        }
+        return LETTERS.charAt(jConnection) + "" + LETTERS.charAt(iConnection);
     }
 }

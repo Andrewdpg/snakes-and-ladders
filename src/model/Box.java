@@ -3,6 +3,7 @@ package model;
 public class Box {
 
     private int id;
+    private String connections;
     private Box next;
     private Box previous;
     private Box snake;
@@ -10,11 +11,13 @@ public class Box {
 
     public Box(int id) {
         this.id = id;
+        this.connections = "";
     }
-    
+
     public Box(int id, Box previous) {
         this.id = id;
         this.previous = previous;
+        this.connections = "";
     }
 
     public int getId() {
@@ -41,11 +44,11 @@ public class Box {
         this.previous = previous;
     }
 
-    public boolean hasSnake(){
+    public boolean hasSnake() {
         return snake != null;
     }
 
-    public boolean hasLadder(){
+    public boolean hasLadder() {
         return ladder != null;
     }
 
@@ -63,5 +66,21 @@ public class Box {
 
     public void setLadder(Box ladder) {
         this.ladder = ladder;
+    }
+
+    public String getConnections() {
+        return connections;
+    }
+
+    public void setConnections(String connections) {
+        this.connections = connections;
+    }
+
+    public void addConnection(String connection) {
+        this.connections += (!this.connections.isBlank() ? "," : "") + connection;
+    }
+
+    public void addStartConnection(String connection) {
+        this.connections = connection + (!this.connections.isBlank() ? "," : "") + this.connections;
     }
 }

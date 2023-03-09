@@ -20,8 +20,6 @@ public class Game {
 
     public void init(int rows, int columns, int snakes, int ladders) {
         board = new Board(rows, columns);
-        // Inicio la lista y añado un jugador, solo para que temporalmente no de error.
-        // Estos métodos deben cambiar.
         board.initSnakesAndLadders(snakes, ladders);
     }
 
@@ -51,6 +49,10 @@ public class Game {
         System.out.println(board.getPlayersBoard(playerList));
     }
 
+    public void showSnakesAndLadders() {
+        System.out.println(board.getSnakesAndLaddersBoard());
+    }
+
     public int throwDice() {
         Random random = new Random();
         dice = random.nextInt(6) + 1;
@@ -75,7 +77,6 @@ public class Game {
             current.setPosition(current.getPosition() + dice);
             System.out.println("Nueva posición: " + current.getPosition());
         }
-        //
     }
 
     public void movePlayer() {
