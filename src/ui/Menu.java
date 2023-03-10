@@ -85,10 +85,11 @@ public class Menu {
         System.out.println(game.throwDice());
         game.movePlayer();
         game.showPlayersBoard();
-        game.nextPlayer();
         if (game.hasFinished()) {
             saveScore();
+            return;
         }
+        game.nextPlayer();
     }
 
     // Guardar los puntajes cuando termina el juego
@@ -101,6 +102,8 @@ public class Menu {
             saveScore(points);
         }
     }
+
+    
 
     private void saveScore(int points){
 
