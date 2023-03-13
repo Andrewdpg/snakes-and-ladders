@@ -1,7 +1,5 @@
 package ui;
 
-import org.w3c.dom.Node;
-
 import model.Game;
 
 public class Menu {
@@ -21,8 +19,7 @@ public class Menu {
     private int option;
     private Game game;
     private boolean isRunning;
-    private long t1;
-    private Node root;
+
     public Menu() {
         isRunning = true;
     }
@@ -34,8 +31,6 @@ public class Menu {
         int columns;
         int snakes;
         int ladders;
-        
-         t1 =System.currentTimeMillis();
 
         System.out.print("¿Cuantas filas tendrá el tablero? ");
         rows = Reader.readInt(2, 2);
@@ -94,22 +89,20 @@ public class Menu {
 
     // Guardar los puntajes cuando termina el juego
     private void saveScore() {
-        if (game.hasFinished()==true){
+        if (game.hasFinished() == true) {
             long t2 = System.currentTimeMillis();
-            long spendTime = (t2-t1)/1000;
-            int points =(int) (600- spendTime)/6;
-            System.out.println("the player: " + game.getCurrentPlayer() + "get: "+ points +"points"  );
+            long spendTime = (t2 - game.getInitTime()) / 1000;
+            int points = (int) (600 - spendTime) / 6;
+            System.out.println("the player: " + game.getCurrentPlayer() + "get: " + points + "points");
             saveScore(points);
         }
     }
 
-    
-
-    private void saveScore(int points){
+    private void saveScore(int points) {
 
     }
 
-    private void printSnakesAndLadders(){
+    private void printSnakesAndLadders() {
         game.showSnakesAndLadders();
     }
 
@@ -191,62 +184,4 @@ public class Menu {
     public boolean isRunning() {
         return isRunning;
     }
-
-    /**
-     * @return int return the option
-     */
-    public int getOption() {
-        return option;
-    }
-
-    /**
-     * @param option the option to set
-     */
-    public void setOption(int option) {
-        this.option = option;
-    }
-
-    /**
-     * @return Game return the game
-     */
-    public Game getGame() {
-        return game;
-    }
-
-    /**
-     * @param game the game to set
-     */
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    /**
-     * @return boolean return the isRunning
-     */
-    public boolean isIsRunning() {
-        return isRunning;
-    }
-
-    /**
-     * @param isRunning the isRunning to set
-     */
-    public void setIsRunning(boolean isRunning) {
-        this.isRunning = isRunning;
-    }
-
-
-    /**
-     * @return long return the t1
-     */
-    public long getT1() {
-        return t1;
-    }
-
-    /**
-     * @param t1 the t1 to set
-     */
-    public void setT1(long t1) {
-        this.t1 = t1;
-    }
-
 }

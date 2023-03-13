@@ -11,11 +11,13 @@ public class Game {
     private String availableSymbols;
     private int dice;
     private boolean hasFinished;
+    private long initTime;
 
     public Game() {
         playerList = new PlayerList();
         hasFinished = false;
         availableSymbols = "*!OX%$#+&";
+        initTime = System.currentTimeMillis();
     }
 
     public void init(int rows, int columns, int snakes, int ladders) {
@@ -91,5 +93,9 @@ public class Game {
 
     public boolean hasFinished() {
         return hasFinished;
+    }
+    
+    public long getInitTime() {
+        return initTime;
     }
 }
