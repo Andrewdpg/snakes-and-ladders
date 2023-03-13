@@ -46,11 +46,13 @@ public class Game {
     }
 
     public void showPlayersBoard() {
-        System.out.println(board.getPlayersBoard(playerList));
+        board.printPlayersBoard(playerList);
+        System.out.println();
     }
 
-    public void showSnakesAndLadders() {
-        System.out.println(board.getSnakesAndLaddersBoard());
+    public void showSnakesAndLadders(){
+        board.printSnakesAndLaddersBoard();
+        System.out.println();
     }
 
     public int throwDice() {

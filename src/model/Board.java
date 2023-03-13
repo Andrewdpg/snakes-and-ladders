@@ -16,15 +16,27 @@ public class Board {
     private int iConnection;
     private int jConnection;
     private int ladderIndex;
+    private int maxConnections;
+
+    private String printFormat;
+    private String printFormatSL;
 
     public Board(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.length = rows * columns;
         initBoard(1);
+        printFormat = getFormat(columns,0);
         iConnection = 0;
         jConnection = 0;
         ladderIndex = 1;
+    }
+
+    private String getFormat(int q,int plus) {
+        if (q == 1) {
+            return "%-"+(8+plus)+"s";
+        }
+        return "%-"+(8+plus)+"s " + getFormat(q - 1,plus);
     }
 
     private void initBoard(int index) {
@@ -62,6 +74,7 @@ public class Board {
 
         initSnakes(snakes, getBoxStartingFrom(-Reader.randInt(1, length), end)); // Inicializa primero las serpientes
         initLadders(ladders, getBoxStartingFrom(Reader.randInt(1, length), start)); // Inicializa, luego, las escaleras
+        printFormatSL = getFormat(columns,maxConnections);
     }
 
     private void initSnakes(int snakes, Box current) {
@@ -76,6 +89,12 @@ public class Board {
                 String connection = getAvailableSnakeConnection().trim();
                 current.addStartConnection(connection);
                 current.getSnake().addConnection(connection);
+                if(current.getTotalConnections() > maxConnections) {
+                    maxConnections = current.getTotalConnections();
+                }
+                if(current.getSnake().getTotalConnections() > maxConnections){
+                    maxConnections = current.getSnake().getTotalConnections();
+                }
                 // Se llama a sí mismo nuevamente para completar el proceso de creación.
                 initSnakes(snakes - 1, getBoxStartingFrom(-Reader.randInt(1, length), current));
                 return;
@@ -95,6 +114,12 @@ public class Board {
                 current.setLadder(getBoxStartingFrom(Reader.randInt(1, length - current.getId()), current));
                 current.addStartConnection(String.valueOf(ladderIndex));
                 current.getLadder().addConnection(String.valueOf(ladderIndex));
+                if(current.getTotalConnections() > maxConnections) {
+                    maxConnections = current.getTotalConnections();
+                }
+                if(current.getLadder().getTotalConnections() > maxConnections){
+                    maxConnections = current.getLadder().getTotalConnections();
+                }
                 ladderIndex++;
                 // Se llama a sí mismo nuevamente para completar el proceso de creación.
                 initLadders(ladders - 1, getBoxStartingFrom(Reader.randInt(1, length), current));
@@ -119,16 +144,17 @@ public class Board {
         }
     }
 
-    public String getPlayersBoard(PlayerList players) {
-        return getPlayersBoard(players, start, 1);
+    public void printPlayersBoard(PlayerList players) {
+        printPlayersBoard(players, start, 1);
     }
 
-    private String getPlayersBoard(PlayerList players, Box current, int row) {
+    private void printPlayersBoard(PlayerList players, Box current, int row) {
         if (row > rows) {
-            return "";
+            return;
         }
-        return getPlayersBoard(players, getBoxStartingFrom(columns, current), row + 1) + "\n"
-                + getRowWithPlayersToString(row, current, players);
+        printPlayersBoard(players, getBoxStartingFrom(columns, current), row + 1);
+        System.out.println();
+        System.out.printf(printFormat, (Object[]) getRowWithPlayersToString(row, current, players).split("/%/"));
     }
 
     private String getRowWithPlayersToString(int row, Box current, PlayerList players) {
@@ -136,24 +162,25 @@ public class Board {
             return "[" + current.getId() + (players.getPlayersAt(current.getId())) + "]";
         }
         if (row % 2 == 0) {
-            return getRowWithPlayersToString(row, current.getNext(), players)  + "[" + current.getId()
+            return getRowWithPlayersToString(row, current.getNext(), players) + "/%/" + "[" + current.getId()
                     + (players.getPlayersAt(current.getId())) + "]";
         } else {
-            return "[" + current.getId() + (players.getPlayersAt(current.getId())) + "]" 
+            return "[" + current.getId() + (players.getPlayersAt(current.getId())) + "]" + "/%/"
                     + getRowWithPlayersToString(row, current.getNext(), players);
         }
     }
 
-    public String getSnakesAndLaddersBoard() {
-        return getSnakesAndLaddersBoard(start, 1);
+    public void printSnakesAndLaddersBoard() {
+        printSnakesAndLaddersBoard(start, 1);
     }
 
-    private String getSnakesAndLaddersBoard(Box current, int row) {
+    private void printSnakesAndLaddersBoard(Box current, int row) {
         if (row > rows) {
-            return "";
+            return;
         }
-        return getSnakesAndLaddersBoard(getBoxStartingFrom(columns, current), row + 1) + "\n"
-                + getRowToString(row, current);
+        printSnakesAndLaddersBoard(getBoxStartingFrom(columns, current), row + 1);
+        System.out.println();
+        System.out.printf(printFormatSL, (Object[]) getRowToString(row, current).split("/%/"));
     }
 
     private String getRowToString(int row, Box current) {
@@ -161,9 +188,9 @@ public class Board {
             return "[" + current.getConnections() + "]";
         }
         if (row % 2 == 0) {
-            return getRowToString(row, current.getNext()) + "[" + current.getConnections() + "]";
+            return getRowToString(row, current.getNext()) + "/%/" + "[" + current.getConnections() + "]";
         } else {
-            return "[" + current.getConnections() + "]"
+            return "[" + current.getConnections() + "]" + "/%/"
                     + getRowToString(row, current.getNext());
         }
     }

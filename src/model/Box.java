@@ -20,6 +20,10 @@ public class Box {
         this.connections = "";
     }
 
+    public int getTotalConnections(){
+        return this.connections.split(",").length;
+    }
+
     public int getId() {
         return id;
     }
