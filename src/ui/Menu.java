@@ -94,13 +94,10 @@ public class Menu {
             long spendTime = (t2 - game.getInitTime()) / 1000;
             int points = (int) (600 - spendTime) / 6;
             System.out.println("the player: " + game.getCurrentPlayer() + "get: " + points + "points");
-            saveScore(points);
         }
     }
 
-    private void saveScore(int points) {
 
-    }
 
     private void printSnakesAndLadders() {
         game.showSnakesAndLadders();

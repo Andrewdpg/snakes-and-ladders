@@ -3,11 +3,13 @@ package model;
 import java.util.*;
 
 public class Game {
+    private Node root;
 
     public static final int MAX_PLAYERS = 3;
 
     private PlayerList playerList;
     private Board board;
+    private LeaderBoard leaderBoard;
     private String availableSymbols;
     private int dice;
     private boolean hasFinished;
@@ -89,6 +91,10 @@ public class Game {
             System.out.println("Jugador " + getCurrentPlayer().getSymbol() + " haz ganado el juego.");
             hasFinished = true;
         }
+    }
+
+    public void addScoreToTree(Player player){
+        leaderBoard.add(new Node(player));
     }
 
     public boolean hasFinished() {
