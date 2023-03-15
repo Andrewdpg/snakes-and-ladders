@@ -93,6 +93,7 @@ public class Menu {
             long t2 = System.currentTimeMillis();
             long spendTime = (t2 - game.getInitTime()) / 1000;
             int points = (int) (600 - spendTime) / 6;
+            game.getCurrentPlayer().setScore(points);
             System.out.println("the player: " + game.getCurrentPlayer() + "get: " + points + "points");
         }
     }
