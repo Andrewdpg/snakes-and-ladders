@@ -1,6 +1,6 @@
 package model;
 
-import java.util.*;
+import java.util.Random;
 
 public class Game {
 
@@ -68,12 +68,13 @@ public class Game {
         if (current.getPosition() + dice > board.getLength()) {
             return;
         }
-        if (board.getBox(current.getPosition() + dice).hasSnake()
-                || board.getBox(current.getPosition() + dice).hasLadder()) {
-            current.setPosition(board.getBox(current.getPosition() + dice).getId());
-            if (board.getBox(current.getPosition() + dice).hasSnake()) {
+        Box nextBox = board.getBox(current.getPosition() + dice-1);
+        if (nextBox.hasLadder()|| nextBox.hasSnake()) {
+            if (nextBox.hasSnake()) {
+                current.setPosition(nextBox.getSnake().getId());
                 System.out.println("Era casilla serpiente");
             } else {
+                current.setPosition(nextBox.getLadder().getId());
                 System.out.println("Era casilla escalera");
             }
             System.out.println("Nueva posición: " + current.getPosition());

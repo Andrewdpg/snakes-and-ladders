@@ -21,6 +21,9 @@ public class Box {
     }
 
     public int getTotalConnections(){
+        if(connections.isEmpty()){
+            return 0;
+        }
         return this.connections.split(",").length;
     }
 

@@ -16,27 +16,25 @@ public class Board {
     private int iConnection;
     private int jConnection;
     private int ladderIndex;
-    private int maxConnections;
 
     private String printFormat;
-    private String printFormatSL;
 
     public Board(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.length = rows * columns;
         initBoard(1);
-        printFormat = getFormat(columns,0);
+        printFormat = getFormat(columns);
         iConnection = 0;
         jConnection = 0;
         ladderIndex = 1;
     }
 
-    private String getFormat(int q,int plus) {
+    private String getFormat(int q) {
         if (q == 1) {
-            return "%-"+(8+plus)+"s";
+            return "%-8s";
         }
-        return "%-"+(8+plus)+"s " + getFormat(q - 1,plus);
+        return "%-8s " + getFormat(q - 1);
     }
 
     private void initBoard(int index) {
@@ -63,18 +61,17 @@ public class Board {
 
     public void initSnakesAndLadders(int snakes, int ladders) {
         // Si el usuario pide más serpientes y escaleras que número de casillas
-        if (snakes + ladders > length - 2) {
+        if (snakes + ladders > (length - 2) / 2) {
             System.out.println("Número de escaleras y serpientes demasiado grande, tomando el número máximo posible");
             // Toma el máximo de serpientes y escaleras en base a las casillas
-            ladders = ladders - ((snakes + ladders) - (length - 2)) / 2;
-            snakes = snakes - ((snakes + ladders) - (length - 2));
+            ladders = ladders - ((snakes + ladders) - (length - 2) / 2) / 2;
+            snakes = snakes - ((snakes + ladders) - (length - 2) / 2);
             System.out.println("Escaleras generadas: " + ladders);
             System.out.println("Serpientes generadas: " + snakes);
         }
 
         initSnakes(snakes, getBoxStartingFrom(-Reader.randInt(1, length), end)); // Inicializa primero las serpientes
         initLadders(ladders, getBoxStartingFrom(Reader.randInt(1, length), start)); // Inicializa, luego, las escaleras
-        printFormatSL = getFormat(columns,maxConnections);
     }
 
     private void initSnakes(int snakes, Box current) {
@@ -82,22 +79,18 @@ public class Board {
             return;
         }
         if (current != end && current != start) {// No puede haber escalera o serpiente en inicio o fin
-            if (!current.hasSnake() &&
-                    !current.hasLadder()) {// No puede contener ya una escalera o una serpiente
+            if (current.getTotalConnections() == 0) {// No puede contener ya una escalera o una serpiente
                 // Asigna una casilla, al azar, que esté detrás.
-                current.setSnake(getBoxStartingFrom(-Reader.randInt(1, current.getId()), current));
-                String connection = getAvailableSnakeConnection().trim();
-                current.addStartConnection(connection);
-                current.getSnake().addConnection(connection);
-                if(current.getTotalConnections() > maxConnections) {
-                    maxConnections = current.getTotalConnections();
+                Box snake = getBoxStartingFrom(-Reader.randInt(1, current.getId()), current);
+                if (snake.getTotalConnections() == 0 && snake != start && snake != end) {
+                    current.setSnake(snake);
+                    String connection = getAvailableSnakeConnection().trim();
+                    current.addStartConnection(connection);
+                    current.getSnake().addConnection(connection);
+                    // Se llama a sí mismo nuevamente para completar el proceso de creación.
+                    initSnakes(snakes - 1, getBoxStartingFrom(-Reader.randInt(1, length), current));
+                    return;
                 }
-                if(current.getSnake().getTotalConnections() > maxConnections){
-                    maxConnections = current.getSnake().getTotalConnections();
-                }
-                // Se llama a sí mismo nuevamente para completar el proceso de creación.
-                initSnakes(snakes - 1, getBoxStartingFrom(-Reader.randInt(1, length), current));
-                return;
             }
         }
         initSnakes(snakes, getBoxStartingFrom(-Reader.randInt(1, length), current));
@@ -108,22 +101,18 @@ public class Board {
             return;
         }
         if (current != end && current != start) { // No puede haber escalera o serpiente en inicio o fin
-            if (!current.hasSnake() &&
-                    !current.hasLadder()) { // No puede contener ya una escalera o una serpiente
+            if (current.getTotalConnections() == 0) { // No puede contener ya una escalera o una serpiente
                 // Asigna una casilla, al azar, que esté delante.
-                current.setLadder(getBoxStartingFrom(Reader.randInt(1, length - current.getId()), current));
-                current.addStartConnection(String.valueOf(ladderIndex));
-                current.getLadder().addConnection(String.valueOf(ladderIndex));
-                if(current.getTotalConnections() > maxConnections) {
-                    maxConnections = current.getTotalConnections();
+                Box ladder = getBoxStartingFrom(Reader.randInt(1, length - current.getId()), current);
+                if (ladder.getTotalConnections() == 0 && ladder != start && ladder != end) {
+                    current.setLadder(ladder);
+                    current.addStartConnection(String.valueOf(ladderIndex));
+                    current.getLadder().addConnection(String.valueOf(ladderIndex));
+                    ladderIndex++;
+                    // Se llama a sí mismo nuevamente para completar el proceso de creación.
+                    initLadders(ladders - 1, getBoxStartingFrom(Reader.randInt(1, length), current));
+                    return;
                 }
-                if(current.getLadder().getTotalConnections() > maxConnections){
-                    maxConnections = current.getLadder().getTotalConnections();
-                }
-                ladderIndex++;
-                // Se llama a sí mismo nuevamente para completar el proceso de creación.
-                initLadders(ladders - 1, getBoxStartingFrom(Reader.randInt(1, length), current));
-                return;
             }
         }
         initLadders(ladders, getBoxStartingFrom(Reader.randInt(1, length), current));
@@ -180,12 +169,12 @@ public class Board {
         }
         printSnakesAndLaddersBoard(getBoxStartingFrom(columns, current), row + 1);
         System.out.println();
-        System.out.printf(printFormatSL, (Object[]) getRowToString(row, current).split("/%/"));
+        System.out.printf(printFormat, (Object[]) getRowToString(row, current).split("/%/"));
     }
 
     private String getRowToString(int row, Box current) {
         if (current.getId() % columns == 0) {
-            return "[" + current.getConnections() + "]";
+            return "[" + current.getConnections()  + "]";
         }
         if (row % 2 == 0) {
             return getRowToString(row, current.getNext()) + "/%/" + "[" + current.getConnections() + "]";
