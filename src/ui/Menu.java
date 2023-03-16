@@ -1,17 +1,20 @@
 package ui;
 
 import model.Game;
+import model.LeaderBoard;
+import model.Node;
 
 public class Menu {
 
     private final String MAIN_MENU = "1. Jugar\n"
-            + "2. Salir\n"
+            + "2. Ver tabla de puntajes\n"
+            + "3. Salir\n"
             + "Opcion:";
     private final String GAME_MENU = "Jugador {player}, es tu turno\n"
             + "1. Tirar dado\n"
             + "2. Ver escaleras y serpientes\n"
             + "Opcion: ";
-    private final String PLAY_AGAIN_MENU = "Juego terminado, ¿quieres jugar de nuevo?\n"
+    private final String PLAY_AGAIN_MENU = "\n\nJuego terminado, ¿quieres jugar de nuevo?\n"
             + "1. Si\n"
             + "2. No\n"
             + "Opcion: ";
@@ -19,9 +22,11 @@ public class Menu {
     private int option;
     private Game game;
     private boolean isRunning;
+    private LeaderBoard leaderBoard;
 
     public Menu() {
         isRunning = true;
+        leaderBoard = new LeaderBoard();
     }
 
     // Método de inicialización del juego
@@ -94,14 +99,22 @@ public class Menu {
             long spendTime = (t2 - game.getInitTime()) / 1000;
             int points = (int) (600 - spendTime) / 6;
             game.getCurrentPlayer().setScore(points);
-            System.out.println("the player: " + game.getCurrentPlayer() + "get: " + points + "points");
+            System.out.println("El jugador: " + game.getCurrentPlayer().getScore() + " obtuvo " + points + " puntos");
+            System.out.println("Dame el nombre del jugador: ");
+            game.getCurrentPlayer().setName(Reader.readString());
+            leaderBoard.add(new Node(game.getCurrentPlayer()));
+            printLeaderBoard();
         }
     }
 
-
-
     private void printSnakesAndLadders() {
         game.showSnakesAndLadders();
+    }
+
+    private void printLeaderBoard() {
+        System.out.println("Tabla de puntajes: \n"
+                + "Puntaje - Ficha - Nombre\n"
+                + leaderBoard.inOrder());
     }
 
     public void printMenu() {
@@ -134,9 +147,13 @@ public class Menu {
                 initGame();
                 break;
             case 2:
+                printLeaderBoard();
+                break;
+            case 3:
                 isRunning = false;
                 System.out.println("Terminando programa...");
                 break;
+
             default:
                 System.out.println("Opcion no reconocida");
                 break;

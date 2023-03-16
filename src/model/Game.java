@@ -3,7 +3,6 @@ package model;
 import java.util.Random;
 
 public class Game {
-    private Node root;
 
     public static final int MAX_PLAYERS = 3;
 

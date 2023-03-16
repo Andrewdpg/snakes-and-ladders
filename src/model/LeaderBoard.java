@@ -1,13 +1,13 @@
 package model;
-public class LeaderBoard{
+
+public class LeaderBoard {
     private Node root;
 
     public void add(Node node) {
         if (root == null) {
-
+            root = node;
         } else {
             insert(node, root);
-
         }
     }
 
@@ -15,7 +15,6 @@ public class LeaderBoard{
         if (node.getPlayer().getScore() < current.getPlayer().getScore()) {
             if (current.getLeft() == null) {
                 current.setLeft(node);
-
             } else {
                 insert(current.getLeft(), current);
             }
@@ -30,9 +29,7 @@ public class LeaderBoard{
         } else {
             System.out.println("the node already exist");
         }
-
     }
-
 
     /**
      * @return Node return the root
@@ -48,4 +45,15 @@ public class LeaderBoard{
         this.root = root;
     }
 
+    public String inOrder() {
+        return inOrder(root);
+    }
+
+    public String inOrder(Node current) {
+        if(current == null){
+            return "";
+        }
+        return (current.getLeft() != null ? inOrder(current.getLeft()) + "\n" : "") + current.getPlayer().toString()
+                + (current.getRight() != null ? "\n" + inOrder(current.getRight()) : "");
+    }
 }

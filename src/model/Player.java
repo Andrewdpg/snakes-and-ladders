@@ -76,4 +76,8 @@ public class Player {
         this.name = name;
     }
 
+    @Override
+    public String toString(){
+        return  this.getScore() + " - "+this.symbol + " - " + this.name;
+    }
 }
