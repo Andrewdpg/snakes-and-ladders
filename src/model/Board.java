@@ -37,6 +37,18 @@ public class Board {
         return "%-8s " + getFormat(q - 1);
     }
 
+    public String getAvailableSnakeConnection() {
+        iConnection++;
+        if (iConnection >= LETTERS.length()) {
+            iConnection = 1;
+            jConnection++;
+        }
+        if (jConnection >= LETTERS.length()) {
+            return jConnection + "" + LETTERS.charAt(iConnection);
+        }
+        return LETTERS.charAt(jConnection) + "" + LETTERS.charAt(iConnection);
+    }
+
     private void initBoard(int index) {
         addBox(index);
         if (index < length) {
@@ -222,17 +234,5 @@ public class Board {
 
     public void setEnd(Box end) {
         this.end = end;
-    }
-
-    public String getAvailableSnakeConnection() {
-        iConnection++;
-        if (iConnection >= LETTERS.length()) {
-            iConnection = 1;
-            jConnection++;
-        }
-        if (jConnection >= LETTERS.length()) {
-            return jConnection + "" + LETTERS.charAt(iConnection);
-        }
-        return LETTERS.charAt(jConnection) + "" + LETTERS.charAt(iConnection);
     }
 }

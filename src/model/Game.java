@@ -8,11 +8,11 @@ public class Game {
 
     private PlayerList playerList;
     private Board board;
-    private LeaderBoard leaderBoard;
     private String availableSymbols;
     private int dice;
-    private boolean hasFinished;
     private long initTime;
+    private boolean hasFinished;
+    
 
     public Game() {
         playerList = new PlayerList();
@@ -91,10 +91,6 @@ public class Game {
             System.out.println("Jugador " + getCurrentPlayer().getSymbol() + " haz ganado el juego.");
             hasFinished = true;
         }
-    }
-
-    public void addScoreToTree(Player player){
-        leaderBoard.add(new Node(player));
     }
 
     public boolean hasFinished() {
