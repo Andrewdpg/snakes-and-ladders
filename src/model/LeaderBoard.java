@@ -53,7 +53,7 @@ public class LeaderBoard {
         if(current == null){
             return "";
         }
-        return (current.getLeft() != null ? inOrder(current.getLeft()) + "\n" : "") + current.getPlayer().toString()
-                + (current.getRight() != null ? "\n" + inOrder(current.getRight()) : "");
+        return (current.getRight() != null ? inOrder(current.getRight()) + "\n" : "") + current.getPlayer().toString()
+                + (current.getLeft() != null ? "\n" + inOrder(current.getLeft()) : "");
     }
 }
