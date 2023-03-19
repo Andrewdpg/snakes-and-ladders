@@ -99,7 +99,7 @@ public class Menu {
             long spendTime = (t2 - game.getInitTime()) / 1000;
             int points = (int) (600 - spendTime) / 6;
             game.getCurrentPlayer().setScore(points);
-            System.out.println("El jugador: " + game.getCurrentPlayer().getScore() + " obtuvo " + points + " puntos");
+            System.out.println("El jugador: " + game.getCurrentPlayer().getSymbol() + " obtuvo " + points + " puntos");
             System.out.println("Dame el nombre del jugador: ");
             game.getCurrentPlayer().setName(Reader.readString());
             leaderBoard.add(new Node(game.getCurrentPlayer()));
